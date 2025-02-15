@@ -33,6 +33,7 @@ const TaskManagementView = () => {
   if (error) {
     return <div>{error}</div>;
   }
+
   return (
     <>
       <h1 className="task-title">
@@ -46,7 +47,11 @@ const TaskManagementView = () => {
         searchTerm={searchKey}
         setSearchTerm={setSearchKey}
       />
-      <TaskList tasks={filteredTasks} />
+      {filteredTasks?.length > 0 ? (
+        <TaskList tasks={filteredTasks} />
+      ) : (
+        <div>There is no task with your filters.</div>
+      )}
     </>
   );
 };
