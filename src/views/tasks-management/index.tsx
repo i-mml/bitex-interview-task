@@ -17,16 +17,20 @@ const TaskManagementView = () => {
     fetchFn: () => axiosInstance("/todos"),
   });
 
-  const filteredTasks = data?.data?.filter((task: Task) => {
-    const matchesFilter =
-      filterStatus === "All" ||
-      (filterStatus === "Completed" && task.completed) ||
-      (filterStatus === "Pending" && !task.completed);
-    const matchesSearch = task.title
-      .toLowerCase()
-      .includes(debouncedSearch.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  const filteredTasks = React.useMemo(
+    () =>
+      data?.data?.filter((task: Task) => {
+        const matchesFilter =
+          filterStatus === "All" ||
+          (filterStatus === "Completed" && task.completed) ||
+          (filterStatus === "Pending" && !task.completed);
+        const matchesSearch = task.title
+          .toLowerCase()
+          .includes(debouncedSearch.toLowerCase());
+        return matchesFilter && matchesSearch;
+      }),
+    [data?.data, debouncedSearch, filterStatus]
+  );
 
   const sortedTasks = React.useMemo(() => {
     if (!filteredTasks) return [];
