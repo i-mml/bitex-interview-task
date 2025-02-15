@@ -11,6 +11,17 @@ const TaskManagementView = () => {
   const [filterStatus, setFilterStatus] = useState<TaskStatusFilterTags>("All");
   const [sortBy, setSortBy] = useState<SortType>("default");
 
+  const paramsToPassFilter = React.useMemo(() => {
+    return {
+      filterStatus,
+      setFilterStatus,
+      sortBy,
+      setSortBy,
+      searchTerm: searchKey,
+      setSearchTerm: setSearchKey,
+    };
+  }, [filterStatus, searchKey, sortBy]);
+
   const debouncedSearch: string = useDebounce(searchKey);
 
   const { data, loading, error } = useFetch({
@@ -60,14 +71,8 @@ const TaskManagementView = () => {
         {!!data?.data?.length && `(Count: ${data?.data?.length})`}
       </h1>
 
-      <TasksFilterBox
-        filterStatus={filterStatus}
-        setFilterStatus={setFilterStatus}
-        searchTerm={searchKey}
-        setSearchTerm={setSearchKey}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-      />
+      <TasksFilterBox {...paramsToPassFilter} />
+
       {sortedTasks?.length > 0 ? (
         <TaskList tasks={sortedTasks} />
       ) : (
