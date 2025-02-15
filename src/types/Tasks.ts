@@ -5,3 +5,4 @@ export interface Task {
 }
 
 export type TaskStatusFilterTags = "All" | "Completed" | "Pending";
+export type SortType = "default" | "status" | "title";
